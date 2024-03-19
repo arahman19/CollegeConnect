@@ -15,10 +15,6 @@ def forums():
 def roommate():
     return render_template('roommate.html')
 
-@app.route('/market')
-def market():
-    return render_template('market.html')
-
 @app.route('/login')
 def login():
     return render_template('login.html')
@@ -32,3 +28,7 @@ def logout():
 @app.route('/profile')
 def profile():
     return render_template('profile.html')
+
+@app.route('/contact')
+def contact():
+    return render_template('contact.html')

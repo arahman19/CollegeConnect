@@ -1,4 +1,47 @@
 {% extends 'template.html' %}
 {% block body %}
+    <style>
+        #leftbox {
+            float: left;
+            width: 33%;
+            height: 280px;
+        }
+
+        #middlebox {
+            float: left;
+            width: 34%;
+            height: 280px;
+        }
+
+        #rightbox {
+            float: right;
+            width: 33%;
+            height: 280px;
+        }
+    </style>
     <header style="text-align: center; font-size: 3rem; color: #222222;">Welcome to College Connect</header>
+    <hr class = "border border-muted border-1 opacity-75">
+    <div id="boxes" style="color: #222222;">
+
+        <div id="leftbox">
+            <h2 style="text-align: center;">Discuss</h2>
+            <hr class = "border border-muted border-1 opacity-75" style="margin-left: 10%;">
+            <p style="margin-left: 10%; font-size: 1.25rem;">Use our forums to discuss a variety of topics with your peers.
+            These forums are a place for open discussion on any number of things and all users are welcome to participate.</p>
+        </div>
+ 
+        <div id="middlebox">
+            <h2 style="text-align: center;">Find Roommates</h2>
+            <hr class = "border border-muted border-1 opacity-75" style="margin-left: 10%;">
+            <p style="margin-left: 10%; font-size: 1.25rem;">Use our roommate finder system in order to find others that have compatible living 
+            conditions with your own. Set up your profile with information about yourself and search for others based on your preferences.</p>
+        </div>
+ 
+        <div id="rightbox">
+            <h2 style="text-align: center;">Connect</h2>
+            <hr class = "border border-muted border-1 opacity-75" style="margin-left: 10%;">
+            <p style="margin-left: 10%; font-size: 1.25rem;">At College Connect, we seek to put students in contact with peers that they may have 
+            never otherwise made a connection with. Use our services as they fit your need to meet as many potential connections as possible.</p>
+        </div>
+    </div>
 {% endblock %}
