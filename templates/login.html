@@ -1,4 +1,20 @@
 {% extends 'template.html' %}
-{% block body %}
-    <header style="text-align: center; font-size: 3rem; color: #222222;">This is the login page</header>
-{% endblock %}
+{%block body%}
+    <div class="login" style="color: black;">
+        <form action="auth" method="POST" class="default-form" style="margin-left: 25%; margin-right: 25%;">
+            <h1>Sign In</h1>
+            <div class="form-field">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" name="email" placeholder="example@mail.com" class="form-text">
+            </div>
+            <div class="form-field">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" name="password" placeholder="Enter password" class="form-text">
+            </div>
+            <button>Login</button>
+            <hr class="form-hr">
+            <p>Not a member?</p>
+            <a href="/signup" id="sign-up"><p>Sign Up!</p></a>
+        </form>
+    </div>
+{%endblock body%}

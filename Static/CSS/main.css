@@ -102,6 +102,13 @@ form.default-form hr.form-hr {
     margin: var(--margin-md) 0;
 }
 
+hr.form-hr {
+    border: var(--primary-color) 3px solid;
+    border-radius: var(--radius-lg);
+    width: 100%;
+    margin: var(--margin-md) 0;
+}
+
 /* BUTTONS */
 button {
     border: none;
