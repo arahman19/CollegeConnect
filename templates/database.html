@@ -1,0 +1,25 @@
+{% extends 'template.html' %}
+{% block body %}
+<div id="boxes" style="color: #222222;">
+    <h3>Database</h3>
+    <br>
+    <table>
+    <thead>
+        <th>Id</th>
+        <th>Username</th>
+        <th>Password</th>
+        <th>Email</th>
+        <th>#</th>
+    </thead>
+    {% for data in accounts %}
+    <tbody>
+        <td>{{data.id}}</td>
+        <td>{{data.username}}</td>
+        <td>{{data.password}}</td>
+        <td>{{data.email}}</td>
+        <td><a href="/delete/{{data.id}}" type="button">Delete</a></td>
+    </tbody>
+    {% endfor%}
+    </table>
+</div>
+{% endblock %}
