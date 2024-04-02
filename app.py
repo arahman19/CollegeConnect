@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate, migrate
+from flask_mail import Mail, Message
 
 app = Flask(__name__, static_url_path='/Static')
 
@@ -63,9 +64,40 @@ def profile():
 def profileedit():
     return render_template('profileedit.html')
 
-@app.route('/contact')
+@app.route('/contact', methods=['GET', 'POST'])
 def contact():
+    if request.method == 'POST':
+        issues = {
+        'website': 'the website',
+        'account': 'my account',
+        'another': 'another user'
+        }
+
+        name = request.form.get('name')
+        issue = issues[request.form.get('prob')]
+        desc = request.form.get('details')
+        mail = Mail(app)
+
+        app.config['MAIL_SERVER']='smtp.gmail.com'
+        app.config['MAIL_PORT'] = 465
+        app.config['MAIL_USERNAME'] = 'collegeconnectassistance@gmail.com'
+        app.config['MAIL_PASSWORD'] = 'vjwe qvdp epjj mhre'
+        app.config['MAIL_USE_TLS'] = False
+        app.config['MAIL_USE_SSL'] = True
+
+        mail = Mail(app)
+    
+        msg = Message( 
+                    name + ' regarding ' + issue, 
+                    sender ='collegeconnectassistance@gmail.com', 
+                    recipients = ['collegeconnectassistance@gmail.com'] 
+                ) 
+        msg.body = desc
+        mail.send(msg)
+        return redirect('/contact')
     return render_template('contact.html')
+
+
 
 @app.route('/create', methods=["POST"])
 def account():
