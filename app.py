@@ -1,16 +1,22 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate, migrate
+from flask_login import LoginManager, UserMixin, login_user, logout_user
 
 app = Flask(__name__, static_url_path='/Static')
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+
+app.config["SECRET_KEY"] = "abc"
  
 db = SQLAlchemy(app)
 
+login_manager = LoginManager()
+login_manager.init_app(app)
+
 migrate = Migrate(app, db)
 
-class Account(db.Model):
+class Account(db.Model, UserMixin):
     # Id : Field which stores unique id for every row in 
     # database table.
     # first_name: Used to store the first name if the user
@@ -25,6 +31,13 @@ class Account(db.Model):
     # will look like
     def __repr__(self):
         return f"Username : {self.username}, Password: {self.password}, Email: {self.email}"
+    
+
+# Creates a user loader callback that returns the user object given an id
+@login_manager.user_loader
+def loader_user(user_id):
+    return Account.query.get(user_id)
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -37,8 +50,22 @@ def forums():
 def roommate():
     return render_template('roommate.html')
 
-@app.route('/login')
+
+@app.route("/login", methods=["GET", "POST"])
 def login():
+    # If a post request was made, find the user by 
+    # filtering for the email
+    if request.method == "POST":
+        account = Account.query.filter_by(
+            email=request.form.get("email")).first()
+        # Check if the password entered is the 
+        # same as the user's password
+        if account.password == request.form.get("password"):
+            # Use the login_user method to log in the user
+            login_user(account)
+            return redirect('/')
+        # Redirect the user back to the home
+        # (we'll create the home route in a moment)
     return render_template('login.html')
 
 @app.route('/signup')
@@ -47,7 +74,7 @@ def signup():
 
 @app.route('/logout')
 def logout():
-    #Should log the user out and return to homepage
+    logout_user()
     return render_template('index.html')
     
 @app.route('/database')
@@ -66,6 +93,16 @@ def profileedit():
 @app.route('/contact')
 def contact():
     return render_template('contact.html')
+
+
+@app.route('/delete/<int:id>')
+def erase(id):
+    # Deletes the data on the basis of unique id and 
+    # redirects to home page
+    data = Account.query.get(id)
+    db.session.delete(data)
+    db.session.commit()
+    return redirect('/')
 
 @app.route('/create', methods=["POST"])
 def account():
