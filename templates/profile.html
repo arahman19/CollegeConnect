@@ -1,19 +1,28 @@
 {% extends 'template.html' %}
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="../Static/CSS/profile.css">
+{% endblock %}
 {% block body %}
-    <header style="text-align: center; font-size: 3rem; color: #222222;">This is the profile page</header>
-    <a href="/profileedit"><h1 style="text-align: center; font-size: 2; color:#222222">Edit Profile</h1></a>
-    <br></br>
-    <!--<body style="align-self: left;"><img src="../Static/Images/placeholderPfp.jpg" alt="custom profile" id="custom-pfp-img" width="200" height="200"></body>-->
-    <!--Can't get the profile pic to resize, not sure why it keeps taking up the whole page, that command should make it so it just shows at a size of 200x200-->
-    <body style="text-align: left; font-size: 20; color:black"><b>John Smith</b></body>
-    <br></br>
-    <body style="text-align: left; font-size: 10; color:black">Age: 19</body>
-    <br></br>
-    <body style="text-align: left; font-size: 10; color:black">Birthday: 4/1/05</body>
-    <br></br>
-    <body style="text-align: left; font-size: 10; color:black">Grade: Sophmore</body>
-    <br></br>
-    <body style="text-align: left; font-size: 10; color:black">Degree: Bachelors</body>
-    <br></br>
-    <body style="text-align: left; font-size: 10; color:black">Field of Study: Computer Science</body>
+    <main>
+        <div class="profile-layout">
+            <div class="profile-info">
+                <a href="/edit_profile"><button class="edit-profile-button button button-primary">Edit Profile</button></a>
+                <figure>
+                    <div class="profile-pfp-container">
+                        <!--Should display placeholder if not logged in or user has no pfp set-->
+                        <img src="../Static/Images/placeholderPfp.jpg" alt="custom profile" id="custom-pfp-img">
+                    </div>
+                    <figcaption class="profile-name"><strong>{{current_user.username}}</strong></figcaption>
+                </figure>
+                <a href="/logout"><button class="logout-button">Logout</button></a>
+                <a href="/profileedit"><button class="logout-button">Settings</button></a>
+            </div>
+            <div class="profile-listings">
+                <h4>Your Settings</h4>
+                <div>
+                    <!--TO DO display users preferences as they are set here-->
+                </div>
+            </div>
+        </div>
+    </main>
 {% endblock %}

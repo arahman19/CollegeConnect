@@ -149,9 +149,9 @@ def account():
         a = Account(username=username, password=password, email=email)
         db.session.add(a)
         db.session.commit()
-        return redirect('/')
+        return redirect('/login')
     else:
-        return redirect('/')
+        return redirect('/signup')
 
 if __name__ == '__main__':
     db.create_all()
