@@ -63,8 +63,8 @@ def login():
             # Use the login_user method to log in the user
             login_user(account)
             return redirect('/')
-        # Redirect the user back to the home
-        # (we'll create the home route in a moment)
+        else:
+            return redirect('/login')
     return render_template('login.html')
 
 @app.route('/signup')
