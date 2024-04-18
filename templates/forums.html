@@ -1,4 +1,47 @@
 {% extends 'template.html' %}
 {% block body %}
     <header style="text-align: center; font-size: 3rem; color: #222222;">This is the Forums Page</header>
+
+
+    <!--The following is the display class for the forum headers, this will be migrated to its own doc for use
+    it is here now for display and critique purposes-->
+    <div class="forum-header">
+        <div class="forum-header-row">
+            <div class="forum-header-tp-container">
+                <div class="forum-header-title">forum title</div>
+            </div>
+            <div class="forum-header-lp-container">
+                <a href="../Static/Images/placeholderPfp.jpg" class="forum-header-pfp-container">
+                    <!-- Replace with author's pfp-->
+                    <img src="../static/images/default-profile.png" alt="" class="forum-header-pfp">
+                </a>
+            </div>
+        </div>
+        <div class="forum-header-description">descriptor of forum made at time of creation</div>
+        <!--if forumHeader.user.username == session['username']
+            add deletion button if user is creator of forum
+        endif-->
+    </div>
+    <br>
+    
+
+    <div class="forum-header">
+        <div class="forum-header-row">
+            <div class="forum-header-tp-container">
+                <div class="forum-header-title">forum title</div>
+            </div>
+            <div class="forum-header-lp-container">
+                <a href="../Static/Images/placeholderPfp.jpg" class="forum-header-pfp-container">
+                    <!-- Replace with author's pfp-->
+                    <img src="../static/images/default-profile.png" alt="" class="forum-header-pfp">
+                </a>
+            </div>
+        </div>
+        <div class="forum-header-description">descriptor of forum made at time of creation</div>
+        <!--if forumHeader.user.username == session['username']
+            add deletion button if user is creator of forum
+        endif-->
+    </div>
+
+    
 {% endblock %}
