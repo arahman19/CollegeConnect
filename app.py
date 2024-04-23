@@ -20,18 +20,20 @@ migrate = Migrate(app, db)
 class Account(db.Model, UserMixin):
     # Id : Field which stores unique id for every row in 
     # database table.
-    # first_name: Used to store the first name if the user
-    # last_name: Used to store last name of the user
-    # Age: Used to store the age of the user
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=False, nullable=False)
     password = db.Column(db.String(20), unique=False, nullable=False)
     email = db.Column(db.String(20), unique=False, nullable=False)
+    gender = db.Column(db.Integer, default=999)
+    grade = db.Column(db.Integer, default=999)
+    religion = db.Column(db.Integer, default=999)
+    drugs = db.Column(db.Integer, default=999)
+    neatness = db.Column(db.Integer, default=999)
  
     # repr method represents how one object of this datatable
     # will look like
     def __repr__(self):
-        return f"Username : {self.username}, Password: {self.password}, Email: {self.email}"
+        return f"Username : {self.username}, Password: {self.password}, Email: {self.email}, Gender: {self.gender}, Grade: {self.grade}, Religion: {self.religion}, Drugs: {self.drugs}, Neatness: {self.neatness}"
     
 # Creates a user loader callback that returns the user object given an id
 @login_manager.user_loader
