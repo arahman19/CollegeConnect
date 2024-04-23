@@ -46,9 +46,13 @@
 #               1 = messy
 #               5 = clean-freak
 #               999 = Don't Care
-#Interests : String Array : 3 interests that the account has
+# Interests : String Array : 3 interests that the account has
+# Chronotype: int : What's your Chronotype?
+#                   0 = Night Owl
+#                   1 = Morning Bird
+#                   999 = Doesn't Matter
 class account:
-    def __init__(self, name, age, gender, grade, religion, drugs, neatness, interests):
+    def __init__(self, name, age, gender, grade, religion, drugs, neatness, interests, chronotype):
         self.name = name
         self.age = age
         self.gender = gender
@@ -57,11 +61,12 @@ class account:
         self.drugs = drugs
         self.neatness = neatness
         self.interests = interests
+        self.chronotype = chronotype
 
 # Critera is a slightly modified account with different fields to account for range values
 # These values would be entered by a form questionaire with text-entry, dropdowns, and radio buttons.
 class accountCriteria:
-    def __init__(self, minAge, maxAge, gender, grade, religion, drugs, minNeatness, maxNeatness, interests):
+    def __init__(self, minAge, maxAge, gender, grade, religion, drugs, minNeatness, maxNeatness, interests, chronotype):
         self.minAge = minAge
         self.maxAge = maxAge
         self.gender = gender
@@ -71,11 +76,12 @@ class accountCriteria:
         self.minNeatness = minNeatness
         self.maxNeatness = maxNeatness
         self.interests = interests
+        self.chronotype = chronotype
 
-criteria = accountCriteria(18, 20, 0, 2, 999, 0, 3, 5, "Gaming")
-acc1 = account("John Doe", 19, 0, 2, 2, 0, 3, ["Gaming", "Gardening", "Stargazing"])
-acc2 = account("Jane Doe", 18, 1, 0, 0, 1, 5, ["Art", "Reading", "Photography"])
-acc3 = account("Chris Topher", 22, 0, 3, 0, 1, 2, ["Gaming", "Marathon Running", "Writing"])
+criteria = accountCriteria(18, 20, 0, 2, 999, 0, 3, 5, 0, "Gaming")
+acc1 = account("John Doe", 19, 0, 2, 2, 0, 3, 0, ["Gaming", "Gardening", "Stargazing"])
+acc2 = account("Jane Doe", 18, 1, 0, 0, 1, 5, 1, ["Art", "Reading", "Photography"])
+acc3 = account("Chris Topher", 22, 0, 3, 0, 1, 2, 999["Gaming", "Marathon Running", "Writing"])
 
 # This would be the actual accoutn database in the real thing
 accDatabase = [acc1, acc2, acc3]
@@ -181,6 +187,17 @@ def roommateFinder():
             # If we change to an interest scoring option, this can be removed
             if (interestFlag != True):
                 print(a.name + " shares no interests with you")
+                check = False
+
+        # What's your Chronotype? Are you an Early Bird or a Night Owl?
+        # If the user does not care about sleep schedules, skip this check.
+        # If the account failed a previous check, skip this check
+        if (criteria.chronotype != 999 and check != False):
+            print("checking " + a.name +"'s chronotype...")
+            if (a.chronotype == criteria.chronotype):
+                print(a.name + " passed the chronotype check!")
+            else:
+                print(a.name + " did not pass the chronotype check.")
                 check = False
         
         # If student passes all checks, add them to the return list of successful matches
