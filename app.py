@@ -1,8 +1,11 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, url_for, abort
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate, migrate
-from flask_login import LoginManager, UserMixin, login_user, logout_user
+from flask_login import LoginManager, UserMixin, login_user, logout_user, current_user, login_required
 from flask_mail import Mail, Message
+from flask_wtf import FlaskForm
+from wtforms import StringField, SubmitField, TextAreaField
+from wtforms.validators import DataRequired
 
 app = Flask(__name__, static_url_path='/Static')
 
@@ -35,6 +38,54 @@ class Account(db.Model, UserMixin):
     def __repr__(self):
         return f"Username : {self.username}, Password: {self.password}, Email: {self.email}, Gender: {self.gender}, Grade: {self.grade}, Religion: {self.religion}, Drugs: {self.drugs}, Neatness: {self.neatness}"
     
+class Topic(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    threads = db.relationship('Thread', backref='topic', lazy=True)
+
+    def __repr__(self):
+        return f'<Topic {self.title}>'
+    
+def add_initial_topics():
+        initial_topics = ['General Discussion', 'Feedback', 'News', 'Events']
+        existing_topics = Topic.query.with_entities(Topic.title).all()
+        existing_titles = {title[0] for title in existing_topics}
+
+        for title in initial_topics:
+            if title not in existing_titles:
+                new_topic = Topic(title=title)
+                db.session.add(new_topic)
+    
+        db.session.commit()
+    
+@app.cli.command('init-db')
+def init_db():
+    add_initial_topics()
+
+class Thread(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    topic_id = db.Column(db.Integer, db.ForeignKey('topic.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=False)
+    user = db.relationship('Account', backref='threads')
+
+    def __repr__(self):
+        return f'<Thread {self.title}>'
+    
+class Post(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.Text, nullable=False)
+    thread_id = db.Column(db.Integer, db.ForeignKey('thread.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=False)
+    posted_on = db.Column(db.DateTime, server_default=db.func.now())
+
+    def __repr__(self):
+        return f'<Post {self.content[:30]}>'
+    
+class ThreadForm(FlaskForm):
+    title = StringField('Thread Title', validators=[DataRequired()])
+    submit = SubmitField('Create Thread')
+    
 # Creates a user loader callback that returns the user object given an id
 @login_manager.user_loader
 def loader_user(user_id):
@@ -47,6 +98,52 @@ def index():
 @app.route('/forums')
 def forums():
     return render_template('forums.html')
+
+@app.route('/topics')
+def topics():
+    all_topics = Topic.query.all()
+    return render_template('topics.html', topics=all_topics)
+
+@app.route('/threads/<int:topic_id>')
+def threads(topic_id):
+    topic = Topic.query.get_or_404(topic_id)
+    form = ThreadForm()
+    return render_template('threads.html', topic=topic, form=form)
+
+@app.route('/create-thread/<int:topic_id>', methods=['GET', 'POST'])
+@login_required
+def create_thread(topic_id):
+    form = ThreadForm()
+    if form.validate_on_submit():
+        new_thread = Thread(title=form.title.data, topic_id=topic_id, user_id=current_user.id)
+        db.session.add(new_thread)
+        db.session.commit()
+        return redirect(url_for('threads', topic_id=topic_id))
+    topic = Topic.query.get_or_404(topic_id)
+    return render_template('threads.html', topic=topic, form=form)
+
+@app.route('/delete-thread/<int:thread_id>', methods=['POST'])
+@login_required
+def delete_thread(thread_id):
+    thread = Thread.query.get_or_404(thread_id)
+    if thread.user_id != current_user.id:
+        return abort(403)
+    db.session.delete(thread)
+    db.session.commit()
+    return redirect(url_for('threads', topic_id=thread.topic_id))
+
+
+@app.route('/posts/<int:thread_id>', methods=['GET', 'POST'])
+def posts(thread_id):
+    thread = Thread.query.get_or_404(thread_id)
+    if request.method == 'POST':
+        post_content = request.form.get('content')
+        if post_content:
+            post = Post(content=post_content, thread_id=thread.id, user_id=current_user.id)
+            db.session.add(post)
+            db.session.commit()
+            return redirect(request.url)
+    return render_template('posts.html', thread=thread)
 
 @app.route('/roommate')
 def roommate():
