@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, abort
+from flask import Flask, render_template, request, redirect, url_for, abort, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate, migrate
 from flask_login import LoginManager, UserMixin, login_user, logout_user, current_user, login_required
@@ -6,6 +6,7 @@ from flask_mail import Mail, Message
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, TextAreaField
 from wtforms.validators import DataRequired
+from datetime import datetime
 
 app = Flask(__name__, static_url_path='/Static')
 
@@ -68,6 +69,7 @@ class Thread(db.Model):
     topic_id = db.Column(db.Integer, db.ForeignKey('topic.id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=False)
     user = db.relationship('Account', backref='threads')
+    posts = db.relationship('Post', backref='thread', lazy='dynamic', cascade='all, delete-orphan')
 
     def __repr__(self):
         return f'<Thread {self.title}>'
@@ -78,6 +80,7 @@ class Post(db.Model):
     thread_id = db.Column(db.Integer, db.ForeignKey('thread.id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=False)
     posted_on = db.Column(db.DateTime, server_default=db.func.now())
+    user = db.relationship('Account', backref='posts')
 
     def __repr__(self):
         return f'<Post {self.content[:30]}>'
@@ -134,6 +137,7 @@ def delete_thread(thread_id):
 
 
 @app.route('/posts/<int:thread_id>', methods=['GET', 'POST'])
+@login_required
 def posts(thread_id):
     thread = Thread.query.get_or_404(thread_id)
     if request.method == 'POST':
@@ -143,7 +147,18 @@ def posts(thread_id):
             db.session.add(post)
             db.session.commit()
             return redirect(request.url)
-    return render_template('posts.html', thread=thread)
+    posts = thread.posts.all()
+    return render_template('posts.html', thread=thread, posts=posts)
+
+@app.route('/delete-post/<int:post_id>', methods=['POST'])
+@login_required
+def delete_post(post_id):
+    post = Post.query.get_or_404(post_id)
+    if post.user_id != current_user.id:
+        abort(403)
+    db.session.delete(post)
+    db.session.commit()
+    return redirect(url_for('posts', thread_id=post.thread_id))
 
 @app.route('/roommate')
 def roommate():
