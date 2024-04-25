@@ -33,11 +33,12 @@ class Account(db.Model, UserMixin):
     religion = db.Column(db.Integer, default=999)
     drugs = db.Column(db.Integer, default=999)
     neatness = db.Column(db.Integer, default=999)
- 
+    chronotype = db.Column(db.Integer, default=999)
+
     # repr method represents how one object of this datatable
     # will look like
     def __repr__(self):
-        return f"Username : {self.username}, Password: {self.password}, Email: {self.email}, Gender: {self.gender}, Grade: {self.grade}, Religion: {self.religion}, Drugs: {self.drugs}, Neatness: {self.neatness}"
+        return f"Username : {self.username}, Password: {self.password}, Email: {self.email}, Gender: {self.gender}, Grade: {self.grade}, Religion: {self.religion}, Drugs: {self.drugs}, Neatness: {self.neatness}, Chronotype: {self.chronotype}"
 
 class RoommateCriteriaForm(FlaskForm):
     minAge = IntegerField('Minimum Age', validators=[NumberRange(min=18, max=100)])
@@ -50,7 +51,6 @@ class RoommateCriteriaForm(FlaskForm):
     maxNeatness = IntegerField('Maximum Neatness', validators=[NumberRange(min=1, max=5)])
     chronotype = SelectField('Chronotype', choices=[('999', 'Any'), ('0', 'Early Bird'), ('1', 'Night Owl')], coerce=int)
     submit = SubmitField('Find Roommates')
-
 
 class Topic(db.Model):
     id = db.Column(db.Integer, primary_key=True)
