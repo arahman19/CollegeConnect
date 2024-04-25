@@ -4,8 +4,8 @@ from flask_migrate import Migrate, migrate
 from flask_login import LoginManager, UserMixin, login_user, logout_user, current_user, login_required
 from flask_mail import Mail, Message
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, TextAreaField
-from wtforms.validators import DataRequired
+from wtforms import StringField, IntegerField, SelectField, SubmitField
+from wtforms.validators import DataRequired, NumberRange
 from datetime import datetime
 
 app = Flask(__name__, static_url_path='/Static')
@@ -38,7 +38,20 @@ class Account(db.Model, UserMixin):
     # will look like
     def __repr__(self):
         return f"Username : {self.username}, Password: {self.password}, Email: {self.email}, Gender: {self.gender}, Grade: {self.grade}, Religion: {self.religion}, Drugs: {self.drugs}, Neatness: {self.neatness}"
-    
+
+class RoommateCriteriaForm(FlaskForm):
+    minAge = IntegerField('Minimum Age', validators=[NumberRange(min=18, max=100)])
+    maxAge = IntegerField('Maximum Age', validators=[NumberRange(min=18, max=100)])
+    gender = SelectField('Gender', choices=[('999', 'Any'), ('0', 'Male'), ('1', 'Female')], coerce=int)
+    grade = SelectField('Grade', choices=[('999', 'Any'), ('0', 'Freshman'), ('1', 'Sophomore'), ('2', 'Junior'), ('3', 'Senior')], coerce=int)
+    religion = SelectField('Religion', choices=[('999', 'Any'), ('0', 'Christian'), ('1', 'Muslim'), ('2', 'Jewish'), ('3', 'Buddhist')], coerce=int)
+    drugs = SelectField('Drug Stance', choices=[('999', 'Any'), ('0', 'No Drugs'), ('1', 'Occasional'), ('2', 'Regular')], coerce=int)
+    minNeatness = IntegerField('Minimum Neatness', validators=[NumberRange(min=1, max=5)])
+    maxNeatness = IntegerField('Maximum Neatness', validators=[NumberRange(min=1, max=5)])
+    chronotype = SelectField('Chronotype', choices=[('999', 'Any'), ('0', 'Early Bird'), ('1', 'Night Owl')], coerce=int)
+    submit = SubmitField('Find Roommates')
+
+
 class Topic(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
@@ -161,8 +174,64 @@ def delete_post(post_id):
     return redirect(url_for('posts', thread_id=post.thread_id))
 
 @app.route('/roommate')
+@app.route('/roommate', methods=['GET', 'POST'])
 def roommate():
-    return render_template('roommate.html')
+    form = RoommateCriteriaForm()
+    roommateList = []
+
+    if form.validate_on_submit():
+        criteria = accountCriteria(
+            minAge=form.minAge.data,
+            maxAge=form.maxAge.data,
+            gender=form.gender.data,
+            grade=form.grade.data,
+            religion=form.religion.data,
+            drugs=form.drugs.data,
+            minNeatness=form.minNeatness.data,
+            maxNeatness=form.maxNeatness.data,
+            interests=form.interests.data,
+            chronotype=form.chronotype.data
+        )
+
+        for a in accDatabase:
+            check = True
+
+            if (criteria.minAge != 999 and criteria.maxAge != 999):
+                if not (a.age >= criteria.minAge and a.age <= criteria.maxAge):
+                    check = False
+
+            if (criteria.gender != 999 and check):
+                if not (a.gender == criteria.gender):
+                    check = False
+
+            if (criteria.grade != 999 and check):
+                if not (a.grade == criteria.grade):
+                    check = False
+
+            if (criteria.religion != 999 and check):
+                if not (a.religion == criteria.religion):
+                    check = False
+
+            if (criteria.drugs != 999 and check):
+                if not (a.drugs == criteria.drugs):
+                    check = False
+
+            if (criteria.minNeatness != 999 and criteria.maxNeatness != 999 and check):
+                if not (a.neatness >= criteria.minNeatness and a.neatness <= criteria.maxNeatness):
+                    check = False
+
+            if (criteria.interests != "N/A" and check):
+                if not (criteria.interests in a.interests):
+                    check = False
+
+            if (criteria.chronotype != 999 and check):
+                if not (a.chronotype == criteria.chronotype):
+                    check = False
+
+            if check:
+                roommateList.append(a)
+
+    return render_template('roommate.html', form=form, roommateList=roommateList)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():

@@ -46,7 +46,6 @@
 #               1 = messy
 #               5 = clean-freak
 #               999 = Don't Care
-# Interests : String Array : 3 interests that the account has
 # Chronotype: int : What's your Chronotype?
 #                   0 = Night Owl
 #                   1 = Morning Bird
@@ -60,7 +59,6 @@ class account:
         self.religion = religion
         self.drugs = drugs
         self.neatness = neatness
-        self.interests = interests
         self.chronotype = chronotype
 
 # Critera is a slightly modified account with different fields to account for range values
@@ -75,13 +73,12 @@ class accountCriteria:
         self.drugs = drugs
         self.minNeatness = minNeatness
         self.maxNeatness = maxNeatness
-        self.interests = interests
         self.chronotype = chronotype
 
-criteria = accountCriteria(18, 20, 0, 2, 999, 0, 3, 5, 0, "Gaming")
-acc1 = account("John Doe", 19, 0, 2, 2, 0, 3, 0, ["Gaming", "Gardening", "Stargazing"])
-acc2 = account("Jane Doe", 18, 1, 0, 0, 1, 5, 1, ["Art", "Reading", "Photography"])
-acc3 = account("Chris Topher", 22, 0, 3, 0, 1, 2, 999["Gaming", "Marathon Running", "Writing"])
+criteria = accountCriteria(18, 20, 0, 2, 999, 0, 3, 5, 0)
+acc1 = account("John Doe", 19, 0, 2, 2, 0, 3, 0)
+acc2 = account("Jane Doe", 18, 1, 0, 0, 1, 5, 1)
+acc3 = account("Chris Topher", 22, 0, 3, 0, 1, 2, 999)
 
 # This would be the actual accoutn database in the real thing
 accDatabase = [acc1, acc2, acc3]
@@ -162,32 +159,6 @@ def roommateFinder():
             else:
                 print(a.name + " did not pass the cleanliness check.")
                 check = False
-        
-        # What is an interest you like?
-        # If the user does not care about sharing an interest, skip this check
-        # If the account failed a previous check, skip this check
-        # Let's just say the default interet value for criteria if nothing is entered is "N/A"
-        # Checking for an empty array might make this check more complicated, we'll see how it turns out.
-        if (criteria.interests != "N/A" and check != False):
-            print("checking " + a.name +"'s interests...")
-            # If we do Interest by scoring, have the interestScore increment by 1 for every interest in common
-            #interestScore = 0
-            # The binary option
-            # If the user has an interest in common, they will be a successful match, if not and interestFlag is false, they get thrown away
-            interestFlag = False
-            # iterate through the account's list of interests and compares it to the criteria's interest
-            # Criteria's interest could be an array intstead of a string, but that might make things a bit more complicated 
-            for i in a.interests:
-                if (i == criteria.interests):
-                    print(a.name + " shares an interest with you!")
-                    # If a matching interest is found, turn the interest flag "True"
-                    interestFlag = True
-            # This is the "binary choice" option
-            # If the student has no interests in common, throw them away
-            # If we change to an interest scoring option, this can be removed
-            if (interestFlag != True):
-                print(a.name + " shares no interests with you")
-                check = False
 
         # What's your Chronotype? Are you an Early Bird or a Night Owl?
         # If the user does not care about sleep schedules, skip this check.
@@ -203,8 +174,6 @@ def roommateFinder():
         # If student passes all checks, add them to the return list of successful matches
         if(check == True):
             returnList.append(a)
-            #If we want to sort the students by "interest score", we'd probably have to do it in here
-            # However, I can't figure a way to store interest score between iterations without it being attached to the account as an extra throwaway field
 
     # At the end of the loop, return a list of successful matches
     return returnList

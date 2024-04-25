@@ -1,14 +1,71 @@
-{% extends 'template.html' %}
-{% block body %}
-<!--
-This should be checking if people are roomates
--->
-    <header style="text-align: center; font-size: 3rem; color: #222222;">This is the roommate finder</header>
-    <h2 style="text-align: center;>Enter the roommate's id below:</h2>
-<!--
-    <div class="form-field">
-                <label for="id" class="form-label">Email</label>
-                <input type="email" name="email" placeholder="example@mail.com" class="form-text">
-   </div>
--->
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Find Your Ideal Roommate</h1>
+
+<form method="post">
+    {{ form.hidden_tag() }}
+
+    <div class="form-group">
+        {{ form.minAge.label(class="form-control-label") }}
+        {{ form.minAge(class="form-control") }}
+    </div>
+    
+    <div class="form-group">
+        {{ form.maxAge.label(class="form-control-label") }}
+        {{ form.maxAge(class="form-control") }}
+    </div>
+    
+    <div class="form-group">
+        {{ form.gender.label(class="form-control-label") }}
+        {{ form.gender(class="form-control") }}
+    </div>
+    
+    <div class="form-group">
+        {{ form.grade.label(class="form-control-label") }}
+        {{ form.grade(class="form-control") }}
+    </div>
+    
+    <div class="form-group">
+        {{ form.religion.label(class="form-control-label") }}
+        {{ form.religion(class="form-control") }}
+    </div>
+    
+    <div class="form-group">
+        {{ form.drugs.label(class="form-control-label") }}
+        {{ form.drugs(class="form-control") }}
+    </div>
+    
+    <div class="form-group">
+        {{ form.minNeatness.label(class="form-control-label") }}
+        {{ form.minNeatness(class="form-control") }}
+    </div>
+    
+    <div class="form-group">
+        {{ form.maxNeatness.label(class="form-control-label") }}
+        {{ form.maxNeatness(class="form-control") }}
+    </div>
+    
+    <div class="form-group">
+        {{ form.interests.label(class="form-control-label") }}
+        {{ form.interests(class="form-control") }}
+    </div>
+    
+    <div class="form-group">
+        {{ form.chronotype.label(class="form-control-label") }}
+        {{ form.chronotype(class="form-control") }}
+    </div>
+
+    <div class="form-group">
+        {{ form.submit(class="btn btn-primary") }}
+    </div>
+</form>
+
+<h2>Matching Roommates:</h2>
+<ul class="list-group">
+    {% for roommate in roommateList %}
+        <li class="list-group-item">{{ roommate.name }} ({{ roommate.age }} years old)</li>
+    {% endfor %}
+</ul>
 {% endblock %}
+
