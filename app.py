@@ -193,7 +193,7 @@ def roommate():
             chronotype=form.chronotype.data
         )
 
-        for a in accDatabase:
+        for a in database:
             check = True
 
             if (criteria.minAge != 999 and criteria.maxAge != 999):
