@@ -21,7 +21,73 @@
                 <h4>Your Settings</h4>
                 <div>
                     <!--TO DO display users preferences as they are set here-->
-                    
+                    {% if current_user.gender == 0 %}
+                        <p>Gender: Male</p>
+                    {% elif current_user.gender == 1 %}
+                        <p>Gender: Female</p>
+                    {% elif current_user.gender == 999 %}
+                        <p>Gender: N/A</p>
+                    {% endif %}
+
+                    {% if current_user.grade == 0 %}
+                        <p>Grade: Freshman</p>
+                    {% elif current_user.grade == 1 %}
+                        <p>Grade: Sophmore</p>
+                    {% elif current_user.grade == 2 %}
+                        <p>Grade: Junior</p>
+                    {% elif current_user.grade == 3 %}
+                        <p>Grade: Senior</p>
+                    {% elif current_user.grade == 999 %}
+                        <p>Grade: N/A</p>
+                    {% endif %}
+
+                    {% if current_user.religion == 0 %}
+                        <p>Religion: Agnosticism</p>
+                    {% elif current_user.religion == 1 %}
+                        <p>Religion: Atheism</p>
+                    {% elif current_user.religion == 2 %}
+                        <p>Religion: Christianity</p>
+                    {% elif current_user.religion == 3 %}
+                        <p>Religion: Judaism</p>
+                    {% elif current_user.religion == 4 %}
+                        <p>Religion: Islam</p>
+                    {% elif current_user.religion == 5 %}
+                        <p>Religion: Buddhism</p>
+                    {% elif current_user.religion == 6 %}
+                        <p>Religion: Hinduism</p>
+                    {% elif current_user.religion == 999 %}
+                        <p>Religion: N/A</p>
+                    {% endif %}
+
+                    {% if current_user.drugs == 0 %}
+                        <p>Accepts/Uses Recreational Drugs</p>
+                    {% elif current_user.drugs == 1 %}
+                        <p>Does not like Recreational Drugs</p>
+                    {% elif current_user.drugs == 999 %}
+                        <p>Does not care about Recreational Drugs</p>
+                    {% endif %}
+
+                    {% if current_user.neatness == 1 %}
+                        <p>Neatness: Slob</p>
+                    {% elif current_user.neatness == 2 %}
+                        <p>Neatness: Messy</p>
+                    {% elif current_user.neatness == 3 %}
+                        <p>Neatness: Average</p>
+                    {% elif current_user.neatness == 4 %}
+                        <p>Neatness: Clean</p>
+                    {% elif current_user.neatness == 5 %}
+                        <p>Neatness: Neat-Freak</p>
+                    {% elif current_user.neatness == 999 %}
+                        <p>Neatness: N/A</p>
+                    {% endif %}
+
+                    {% if current_user.chronotype == 0 %}
+                        <p>Chronotype: Early Bird</p>
+                    {% elif current_user.chronotype == 1 %}
+                        <p>Chronotype: Night Owl</p>
+                    {% elif current_user.chronotype == 999 %}
+                        <p>Chronotype: N/A</p>
+                    {% endif %}
                 </div>
             </div>
         </div>
