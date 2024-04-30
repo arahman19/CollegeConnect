@@ -335,6 +335,28 @@ def account():
         return redirect('/login')
     else:
         return redirect('/signup')
+    
+@app.route('/edit', methods=["POST"])
+def accountEdit():
+     
+    # In this function we will input data from the 
+    # form page and store it in our database.
+    # Remember that inside the get the name should
+    # exactly be the same as that in the html
+    # input fields
+    gender = request.form.get("gender")
+    grade = request.form.get("grade")
+    religion = request.form.get("religion")
+    drugs = request.form.get("drugs")
+    neatness = request.form.get("neatness")
+    chronotype = request.form.get("chrono")
+ 
+    # create an object of the Account class of models
+    # and store data as a row in our datatable
+    # a = Account(username=username, password=password, email=email)
+    # db.session.add(a)
+    # db.session.commit()
+    # return redirect('/login')
 
 if __name__ == '__main__':
     db.create_all()
