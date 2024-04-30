@@ -34,7 +34,7 @@ class Account(db.Model, UserMixin):
     drugs = db.Column(db.Integer, default=999)
     neatness = db.Column(db.Integer, default=999)
     chronotype = db.Column(db.Integer, default=999)
-    profilePic = db.Column(db.File, default= "../Static/Images/placeholderPfp.jpg")
+    # profilePic = db.Column(db.File, default= "../Static/Images/placeholderPfp.jpg")
 
     # repr method represents how one object of this datatable
     # will look like
@@ -354,10 +354,17 @@ def accountEdit():
  
     # create an object of the Account class of models
     # and store data as a row in our datatable
+    current_user.gender = gender
+    current_user.grade = grade
+    current_user.religion = religion
+    current_user.drugs = drugs
+    current_user.neatness = neatness
+    current_user.chronotype = chronotype
     # a = Account(username=username, password=password, email=email)
     # db.session.add(a)
     # db.session.commit()
     # return redirect('/login')
+    return redirect('/profile')
 
 if __name__ == '__main__':
     db.create_all()
