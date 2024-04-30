@@ -21,8 +21,6 @@ login_manager.init_app(app)
 
 migrate = Migrate(app, db)
 
-displayGender = ""
-
 class Account(db.Model, UserMixin):
     # Id : Field which stores unique id for every row in 
     # database table.
@@ -363,18 +361,6 @@ def accountEdit():
     current_user.neatness = neatness
     current_user.chronotype = chronotype
     db.session.commit()
-    # This is how a switch statement supposedly works in python
-    # This causes no in IDE errors, but trying to run the website causes it to crash due to a syntax error
-    # IF-Else chains it is then?
-    # match current_user.gender:
-    #    case 0:
-    #        displayGender = "Male"
-    #    case 1:
-    #        displayGender = "Female"
-    #    case _:
-    #        displayGender = "N/A"
-    if (current_user.gender == 0):
-        displayGender = "Male"
 
     return redirect('/profile')
 
