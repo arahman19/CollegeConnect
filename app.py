@@ -362,10 +362,8 @@ def accountEdit():
     current_user.drugs = drugs
     current_user.neatness = neatness
     current_user.chronotype = chronotype
-    # a = Account(username=username, password=password, email=email)
-    # db.session.add(a)
-    # db.session.commit()
-    # return redirect('/login')
+    db.session.commit()
+
     return redirect('/profile')
 
 if __name__ == '__main__':
