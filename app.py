@@ -8,6 +8,8 @@ from wtforms import StringField, IntegerField, SelectField, SubmitField
 from wtforms.validators import DataRequired, NumberRange
 from datetime import datetime
 
+from roommate_finder_mockup import accountCriteria
+
 app = Flask(__name__, static_url_path='/Static')
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
