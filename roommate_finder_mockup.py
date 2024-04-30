@@ -87,101 +87,63 @@ roommateList = []
 def roommateFinder():
     # Return list for successful matches
     returnList = []
-    # check variable determines if a match is successful in a binary fashion
-    check = True
     
     for a in accDatabase:
-
-        # Reset the value of the check variable
-        check = True
+        # Count of matches with criteria
+        matchCount = 0
 
         # How old would you like your roommate
-        # If the user does not care about age, skip this iteration
         if (criteria.minAge != 999 and criteria.maxAge != 999):
-            print("checking " + a.name +"'s age...")
             if (a.age >= criteria.minAge and a.age <= criteria.maxAge):
-                print(a.name + " passed the age check!")
-            else:
-                print(a.name + " did not pass the age check.")
-                check = False
+                matchCount += 1
 
         # What is the preferred gender of your roommate?
-        # If the user does not care about gender, skip this check
-        # If the account failed a previous check, skip this check
-        if (criteria.gender != 999 and check != False):
-            print("checking " + a.name +"'s gender...")
+        if (criteria.gender != 999):
             if (a.gender == criteria.gender):
-                print(a.name + " passed the gender check!")
-            else:
-                print(a.name + " did not pass the gender check.")
-                check = False
+                matchCount += 1
         
         # What is the preferred grade-level of your roommate?
-        # If the user does not care about grade-level, skip this check
-        # If the account failed a previous check, skip this check
-        if (criteria.grade != 999 and check != False):
-            print("checking " + a.name +"'s grade-level...")
+        if (criteria.grade != 999):
             if (a.grade == criteria.grade):
-                print(a.name + " passed the grade check!")
-            else:
-                print(a.name + " did not pass the grade check.")
-                check = False
+                matchCount += 1
 
         # What is the preferred religion of your roommate?
-        # If the user does not care about religion, skip this check
-        # If the account failed a previous check, skip this check
-        if (criteria.religion != 999 and check != False):
-            print("checking " + a.name +"'s religion...")
+        if (criteria.religion != 999):
             if (a.religion == criteria.religion):
-                print(a.name + " passed the religion check!")
-            else:
-                print(a.name + " did not pass the religion check.")
-                check = False
+                matchCount += 1
 
         # What is your stance on drug use?
-        # If the user does not care about drug use, skip this check
-        # If the account failed a previous check, skip this check
-        if (criteria.drugs != 999 and check != False):
-            print("checking " + a.name +"'s drug stance...")
+        if (criteria.drugs != 999):
             if (a.drugs == criteria.drugs):
-                print(a.name + " passed the drug test!")
-            else:
-                print(a.name + " did not pass the drug test.")
-                check = False
+                matchCount += 1
 
         # How much does cleanliness matter to you?
-        # If the user does not care about cleanliness, skip this iteration
-        # If the account failed a previous check, skip this check
-        if (criteria.minNeatness != 999 and criteria.maxNeatness != 999 and check != False):
-            print("checking " + a.name +"'s neatness...")
+        if (criteria.minNeatness != 999 and criteria.maxNeatness != 999):
             if (a.neatness >= criteria.minNeatness and a.neatness <= criteria.maxNeatness):
-                print(a.name + " passed the cleanliness check!")
-            else:
-                print(a.name + " did not pass the cleanliness check.")
-                check = False
+                matchCount += 1
 
         # What's your Chronotype? Are you an Early Bird or a Night Owl?
-        # If the user does not care about sleep schedules, skip this check.
-        # If the account failed a previous check, skip this check
-        if (criteria.chronotype != 999 and check != False):
-            print("checking " + a.name +"'s chronotype...")
+        if (criteria.chronotype != 999):
             if (a.chronotype == criteria.chronotype):
-                print(a.name + " passed the chronotype check!")
-            else:
-                print(a.name + " did not pass the chronotype check.")
-                check = False
+                matchCount += 1
+        
+        # Add the match count to the account object
+        a.matchCount = matchCount
         
         # If student passes all checks, add them to the return list of successful matches
-        if(check == True):
+        if(matchCount > 0):
             returnList.append(a)
 
-    # At the end of the loop, return a list of successful matches
+    # Sort the return list by match count in descending order
+    returnList.sort(key=lambda x: x.matchCount, reverse=True)
+    
+    # If there are no perfect matches, return the sorted list
     return returnList
 
 # Save list of returned roommates
 roommateList = roommateFinder()
 
-#Print Names of Matching Roommates
+# Print Names of Matching Roommates
 print("Successful Matches: ")
 for r in roommateList:
-    print(r.name)
+    print(r.name, "- Number of Matches:", r.matchCount)
