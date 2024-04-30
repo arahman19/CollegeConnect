@@ -34,6 +34,7 @@ class Account(db.Model, UserMixin):
     drugs = db.Column(db.Integer, default=999)
     neatness = db.Column(db.Integer, default=999)
     chronotype = db.Column(db.Integer, default=999)
+    profilePic = db.Column(db.File, default= "../Static/Images/placeholderPfp.jpg")
 
     # repr method represents how one object of this datatable
     # will look like
