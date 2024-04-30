@@ -36,6 +36,7 @@ class Account(db.Model, UserMixin):
     drugs = db.Column(db.Integer, default=999)
     neatness = db.Column(db.Integer, default=999)
     chronotype = db.Column(db.Integer, default=999)
+    about = db.Column(db.Integer, default="")
     # profilePic = db.Column(db.File, default= "../Static/Images/placeholderPfp.jpg")
 
     # repr method represents how one object of this datatable
@@ -353,6 +354,7 @@ def accountEdit():
     drugs = request.form.get("drugs")
     neatness = request.form.get("neatness")
     chronotype = request.form.get("chrono")
+    about = request.form.get("aboutMe")
  
     # create an object of the Account class of models
     # and store data as a row in our datatable
@@ -362,6 +364,14 @@ def accountEdit():
     current_user.drugs = drugs
     current_user.neatness = neatness
     current_user.chronotype = chronotype
+
+    # If The About Me section has no input, keep it the same as the old one
+    # If the About Me is edited, update the database
+    if (about == "About Me..." or about == ""):
+        current_user.about = current_user.about
+    else:
+        current_user.about = about
+    
     db.session.commit()
 
     return redirect('/profile')
