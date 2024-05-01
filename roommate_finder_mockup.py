@@ -51,7 +51,7 @@
 #                   1 = Morning Bird
 #                   999 = Doesn't Matter
 class account:
-    def __init__(self, name, age, gender, grade, religion, drugs, neatness, interests, chronotype):
+    def __init__(self, name, age, gender, grade, religion, drugs, neatness, chronotype):
         self.name = name
         self.age = age
         self.gender = gender
@@ -64,7 +64,7 @@ class account:
 # Critera is a slightly modified account with different fields to account for range values
 # These values would be entered by a form questionaire with text-entry, dropdowns, and radio buttons.
 class accountCriteria:
-    def __init__(self, minAge, maxAge, gender, grade, religion, drugs, minNeatness, maxNeatness, interests, chronotype):
+    def __init__(self, minAge, maxAge, gender, grade, religion, drugs, minNeatness, maxNeatness, chronotype):
         self.minAge = minAge
         self.maxAge = maxAge
         self.gender = gender
@@ -75,10 +75,10 @@ class accountCriteria:
         self.maxNeatness = maxNeatness
         self.chronotype = chronotype
 
-criteria = accountCriteria(18, 20, 0, 2, 999, 0, 0, 3, 5, 0)
-acc1 = account("John Doe", 19, 0, 2, 2, 0, 3, 3, 1)
-acc2 = account("Jane Doe", 18, 22, 0, 0, 1, 2, 4, 1)
-acc3 = account("Chris Topher", 22, 23, 3, 0, 1, 2, 3, 0)
+criteria = accountCriteria(18, 20, 0, 2, 999, 0, 3, 5, 0)
+acc1 = account("John Doe", 19, 0, 2, 2, 0, 3, 1)
+acc2 = account("Jane Doe", 18, 22, 0, 0, 2, 4, 1)
+acc3 = account("Chris Topher", 22, 23, 3, 0, 1, 3, 0)
 
 # This would be the actual accoutn database in the real thing
 accDatabase = [acc1, acc2, acc3]

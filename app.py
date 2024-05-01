@@ -177,7 +177,6 @@ def delete_post(post_id):
     db.session.commit()
     return redirect(url_for('posts', thread_id=post.thread_id))
 
-@app.route('/roommate')
 @app.route('/roommate', methods=['GET', 'POST'])
 def roommate():
     form = RoommateCriteriaForm()
@@ -193,49 +192,47 @@ def roommate():
             drugs=form.drugs.data,
             minNeatness=form.minNeatness.data,
             maxNeatness=form.maxNeatness.data,
-            interests=form.interests.data,
             chronotype=form.chronotype.data
         )
 
-        for a in database:
+        accounts = Account.query.all()
+
+        for a in accounts:
             check = True
 
-            if (criteria.minAge != 999 and criteria.maxAge != 999):
+            if criteria.minAge != 999 and criteria.maxAge != 999:
                 if not (a.age >= criteria.minAge and a.age <= criteria.maxAge):
                     check = False
 
-            if (criteria.gender != 999 and check):
-                if not (a.gender == criteria.gender):
+            if criteria.gender != 999 and check:
+                if a.gender != criteria.gender:
                     check = False
 
-            if (criteria.grade != 999 and check):
-                if not (a.grade == criteria.grade):
+            if criteria.grade != 999 and check:
+                if a.grade != criteria.grade:
                     check = False
 
-            if (criteria.religion != 999 and check):
-                if not (a.religion == criteria.religion):
+            if criteria.religion != 999 and check:
+                if a.religion != criteria.religion:
                     check = False
 
-            if (criteria.drugs != 999 and check):
-                if not (a.drugs == criteria.drugs):
+            if criteria.drugs != 999 and check:
+                if a.drugs != criteria.drugs:
                     check = False
 
-            if (criteria.minNeatness != 999 and criteria.maxNeatness != 999 and check):
+            if criteria.minNeatness != 999 and criteria.maxNeatness != 999 and check:
                 if not (a.neatness >= criteria.minNeatness and a.neatness <= criteria.maxNeatness):
                     check = False
 
-            if (criteria.interests != "N/A" and check):
-                if not (criteria.interests in a.interests):
-                    check = False
-
-            if (criteria.chronotype != 999 and check):
-                if not (a.chronotype == criteria.chronotype):
+            if criteria.chronotype != 999 and check:
+                if a.chronotype != criteria.chronotype:
                     check = False
 
             if check:
                 roommateList.append(a)
 
     return render_template('roommate.html', form=form, roommateList=roommateList)
+
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
