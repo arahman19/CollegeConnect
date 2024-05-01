@@ -1,9 +1,9 @@
 {% extends "template.html" %}
 
-{% block content %}
-<h1>Find Your Ideal Roommate</h1>
+{% block body %}
+<h1 style="color: #222222;">Find Your Ideal Roommate</h1>
 
-<form method="post">
+<form  style="color: #222222;" method="post">
     {{ form.hidden_tag() }}
 
     <div class="form-group">
@@ -36,10 +36,6 @@
 
     <div class="form-group">
         {{ form.maxNeatness.label }} {{ form.maxNeatness(class="form-control") }}
-    </div>
-
-    <div class="form-group">
-        {{ form.interests.label }} {{ form.interests(class="form-control") }}
     </div>
 
     <div class="form-group">
