@@ -51,9 +51,8 @@
 #                   1 = Morning Bird
 #                   999 = Doesn't Matter
 class account:
-    def __init__(self, name, age, gender, grade, religion, drugs, neatness, chronotype):
+    def __init__(self, name, gender, grade, religion, drugs, neatness, chronotype):
         self.name = name
-        self.age = age
         self.gender = gender
         self.grade = grade
         self.religion = religion
@@ -64,9 +63,7 @@ class account:
 # Critera is a slightly modified account with different fields to account for range values
 # These values would be entered by a form questionaire with text-entry, dropdowns, and radio buttons.
 class accountCriteria:
-    def __init__(self, minAge, maxAge, gender, grade, religion, drugs, minNeatness, maxNeatness, chronotype):
-        self.minAge = minAge
-        self.maxAge = maxAge
+    def __init__(self, gender, grade, religion, drugs, minNeatness, maxNeatness, chronotype):
         self.gender = gender
         self.grade = grade
         self.religion = religion
@@ -75,10 +72,10 @@ class accountCriteria:
         self.maxNeatness = maxNeatness
         self.chronotype = chronotype
 
-criteria = accountCriteria(18, 20, 0, 2, 999, 0, 3, 5, 0)
-acc1 = account("John Doe", 19, 0, 2, 2, 0, 3, 1)
-acc2 = account("Jane Doe", 18, 22, 0, 0, 2, 4, 1)
-acc3 = account("Chris Topher", 22, 23, 3, 0, 1, 3, 0)
+criteria = accountCriteria(0, 2, 999, 0, 3, 5, 0)
+acc1 = account("John Doe", 0, 2, 2, 0, 3, 1)
+acc2 = account("Jane Doe", 0, 0, 2, 4, 0, 1)
+acc3 = account("Chris Topher", 3, 0, 1, 3, 0, 0)
 
 # This would be the actual accoutn database in the real thing
 accDatabase = [acc1, acc2, acc3]
@@ -91,11 +88,6 @@ def roommateFinder():
     for a in accDatabase:
         # Count of matches with criteria
         matchCount = 0
-
-        # How old would you like your roommate
-        if (criteria.minAge != 999 and criteria.maxAge != 999):
-            if (a.age >= criteria.minAge and a.age <= criteria.maxAge):
-                matchCount += 1
 
         # What is the preferred gender of your roommate?
         if (criteria.gender != 999):

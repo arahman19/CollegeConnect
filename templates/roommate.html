@@ -7,14 +7,6 @@
     {{ form.hidden_tag() }}
 
     <div class="form-group">
-        {{ form.minAge.label }} {{ form.minAge(class="form-control") }}
-    </div>
-
-    <div class="form-group">
-        {{ form.maxAge.label }} {{ form.maxAge(class="form-control") }}
-    </div>
-
-    <div class="form-group">
         {{ form.gender.label }} {{ form.gender(class="form-control") }}
     </div>
 
@@ -47,10 +39,10 @@
     </div>
 </form>
 
-<h2>Matching Roommates:</h2>
-<ul class="list-group">
+<h2 style="color: #222222;">Matching Roommates:</h2>
+<ul style="color: #222222;"  class="list-group">
     {% for roommate in roommateList %}
-        <li class="list-group-item">{{ roommate.name }} ({{ roommate.age }} years old)</li>
+        <li style="color: #222222;" class="list-group-item">{{ roommate.username }}</li>
     {% endfor %}
 </ul>
 {% endblock %}

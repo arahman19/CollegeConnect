@@ -45,8 +45,6 @@ class Account(db.Model, UserMixin):
         return f"Username : {self.username}, Password: {self.password}, Email: {self.email}, Gender: {self.gender}, Grade: {self.grade}, Religion: {self.religion}, Drugs: {self.drugs}, Neatness: {self.neatness}, Chronotype: {self.chronotype}"
 
 class RoommateCriteriaForm(FlaskForm):
-    minAge = IntegerField('Minimum Age', validators=[NumberRange(min=18, max=100)])
-    maxAge = IntegerField('Maximum Age', validators=[NumberRange(min=18, max=100)])
     gender = SelectField('Gender', choices=[('999', 'Any'), ('0', 'Male'), ('1', 'Female')], coerce=int)
     grade = SelectField('Grade', choices=[('999', 'Any'), ('0', 'Freshman'), ('1', 'Sophomore'), ('2', 'Junior'), ('3', 'Senior')], coerce=int)
     religion = SelectField('Religion', choices=[('999', 'Any'), ('0', 'Christian'), ('1', 'Muslim'), ('2', 'Jewish'), ('3', 'Buddhist')], coerce=int)
@@ -183,9 +181,12 @@ def roommate():
     roommateList = []
 
     if form.validate_on_submit():
+        print("Form submitted", form.data)  # This will show all form data
+    else:
+        print("Form errors", form.errors)
+
+    if form.validate_on_submit():
         criteria = accountCriteria(
-            minAge=form.minAge.data,
-            maxAge=form.maxAge.data,
             gender=form.gender.data,
             grade=form.grade.data,
             religion=form.religion.data,
@@ -199,10 +200,6 @@ def roommate():
 
         for a in accounts:
             check = True
-
-            if criteria.minAge != 999 and criteria.maxAge != 999:
-                if not (a.age >= criteria.minAge and a.age <= criteria.maxAge):
-                    check = False
 
             if criteria.gender != 999 and check:
                 if a.gender != criteria.gender:
