@@ -42,7 +42,7 @@
 <h2 style="color: #222222;">Matching Roommates:</h2>
 <ul style="color: #222222;"  class="list-group">
     {% for roommate in roommateList %}
-        <li style="color: #222222;" class="list-group-item">{{ roommate.username }}</li>
+        <li style="color: #222222;" class="list-group-item">{{ roommate.username }} - {{ roommate.email}}</li>
     {% endfor %}
 </ul>
 {% endblock %}

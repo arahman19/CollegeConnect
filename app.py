@@ -47,8 +47,8 @@ class Account(db.Model, UserMixin):
 class RoommateCriteriaForm(FlaskForm):
     gender = SelectField('Gender', choices=[('999', 'Any'), ('0', 'Male'), ('1', 'Female')], coerce=int)
     grade = SelectField('Grade', choices=[('999', 'Any'), ('0', 'Freshman'), ('1', 'Sophomore'), ('2', 'Junior'), ('3', 'Senior')], coerce=int)
-    religion = SelectField('Religion', choices=[('999', 'Any'), ('0', 'Christian'), ('1', 'Muslim'), ('2', 'Jewish'), ('3', 'Buddhist')], coerce=int)
-    drugs = SelectField('Drug Stance', choices=[('999', 'Any'), ('0', 'No Drugs'), ('1', 'Occasional'), ('2', 'Regular')], coerce=int)
+    religion = SelectField('Religion', choices=[('999', 'Any'), ('0', 'Agnosticism'), ('1', 'Atheism'), ('2', 'Christianity'), ('3', 'Judaism'), ('4', 'Islam'), ('5', 'Buddhism'), ('3', 'Hinduism')], coerce=int)
+    drugs = SelectField('Drug Stance', choices=[('999', 'Any'), ('0', 'Yes'), ('1', 'No')], coerce=int)
     minNeatness = IntegerField('Minimum Neatness', validators=[NumberRange(min=1, max=5)])
     maxNeatness = IntegerField('Maximum Neatness', validators=[NumberRange(min=1, max=5)])
     chronotype = SelectField('Chronotype', choices=[('999', 'Any'), ('0', 'Early Bird'), ('1', 'Night Owl')], coerce=int)
