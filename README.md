@@ -13,8 +13,7 @@ CollegeConnect is a web application designed to help college students connect th
 - Python
 - Flask (with Flask-WTF for forms and Flask-SQLAlchemy for database interactions)
 - HTML/CSS
-- SQLite (for the database)
-- Bootstrap (for front-end styling)
+- SQL (for the database)
 
 ## Installation
 
